@@ -35,7 +35,7 @@ buildPythonPackage (finalAttrs: {
   version = "2.2.0";
   pyproject = true;
 
-  disabled = pythonOlder "3.13";
+  disabled = pythonOlder "3.14";
 
   src = fetchFromGitHub {
     owner = "nabucasa";
