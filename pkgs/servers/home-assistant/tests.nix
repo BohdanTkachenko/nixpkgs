@@ -60,7 +60,7 @@ let
       ibeacon-ble
     ];
     gpslogger = getComponentDeps "assist_pipeline" ++ getComponentDeps "camera";
-    group = getComponentDeps "camera" ++ getComponentDeps "conversation";
+    group = getComponentDeps "camera" ++ getComponentDeps "conversation" ++ getComponentDeps "infrared";
     hassio = getComponentDeps "frontend" ++ getComponentDeps "homeassistant_yellow";
     hikvision = getComponentDeps "camera";
     homeassistant = getComponentDeps "camera" ++ getComponentDeps "conversation";
