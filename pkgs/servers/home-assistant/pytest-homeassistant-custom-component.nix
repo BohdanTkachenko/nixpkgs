@@ -30,6 +30,12 @@ buildPythonPackage rec {
     hash = "sha256-VweH6SWDYO9m0g2MS8awK00DwiflfPpyLep79U60uWw=";
   };
 
+  patches = [
+    # Update for Home Assistant 2026.4.0
+    # https://github.com/MatthewFlamm/pytest-homeassistant-custom-component/pull/246
+    ./patches/pytest-homeassistant-custom-component-246.patch
+  ];
+
   build-system = [ setuptools ];
 
   pythonRemoveDeps = true;
