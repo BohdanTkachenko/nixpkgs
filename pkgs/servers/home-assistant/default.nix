@@ -416,6 +416,7 @@ python.pkgs.buildPythonApplication rec {
       "assist_pipeline"
       "frontend"
       "hue"
+      "infrared"
       "mobile_app"
     ];
 
