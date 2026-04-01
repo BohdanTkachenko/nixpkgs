@@ -14,7 +14,7 @@ buildHomeAssistantComponent rec {
     inherit owner;
     repo = "ha-tibber-pulse-local";
     tag = version;
-    sha256 = "sha256-vQT0Ul4/QLQhuROENWXjSLVcml5BRWvqNIWdOLXN9dk=";
+    hash = "sha256-vQT0Ul4/QLQhuROENWXjSLVcml5BRWvqNIWdOLXN9dk=";
   };
 
   dependencies = [
