@@ -16,7 +16,7 @@ let
     information.sources."${hostPlatform.system}"
       or (throw "antigravity-ide: unsupported system ${hostPlatform.system}");
 in
-buildVscode {
+(buildVscode {
   inherit commandLineArgs useVSCodeRipgrep;
   inherit (information) version vscodeVersion;
   pname = "antigravity-ide";
@@ -75,4 +75,32 @@ buildVscode {
       schembriaiden
     ];
   };
-}
+}).overrideAttrs (oldAttrs: {
+  # On NixOS the agent is broken out of the box. The bundled
+  # `language_server_linux_x64` binary (which powers the agent, including its
+  # terminal) re-execs itself inside Antigravity's own nsjail sandbox, and that
+  # jail bind-mounts the host's `/lib`, `/lib64`, `/usr`, `/bin` (all empty or
+  # minimal on NixOS) plus every directory on the process's `$PATH` — and
+  # nothing else. On a normal FHS distro that is enough, because `/usr` + `/lib`
+  # contain every binary and library. NixOS instead scatters everything across
+  # `/nix/store` and reaches it through symlink farms (`/run/current-system/sw/
+  # bin`, `/etc/profiles/...`); the jail mounts those farm dirs but not their
+  # store targets, so binaries (even the glibc loader the language server needs)
+  # resolve to dangling links and the agent dies with `execve(...): No such file
+  # or directory` / `exec: "bash": executable file not found in $PATH`.
+  #
+  # Putting `/nix/store` on `$PATH` makes nsjail bind-mount the store read-only
+  # into the jail, which is the NixOS analogue of the `/usr` + `/lib` mount it
+  # already relies on elsewhere: every farm symlink resolves and every library
+  # loads, for any tool, with no per-binary patching. The store is world-
+  # readable and — by Nix convention, which secret managers like sops-nix/agenix
+  # enforce — contains no plaintext secrets, so this exposes nothing a process
+  # running as the user cannot already read. (`/nix/store` holds only
+  # subdirectories, so adding it to `$PATH` is a no-op for normal command
+  # lookup; it serves purely as the sandbox-mount lever.)
+  preFixup = (oldAttrs.preFixup or "") + ''
+    gappsWrapperArgs+=(
+      --prefix PATH : "/nix/store"
+    )
+  '';
+})
