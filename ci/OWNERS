@@ -124,6 +124,7 @@ nixos/modules/installer/tools/nix-fallback-paths.nix  @Artturin @Ericson2314 @lo
 
 # NixOS integration test driver
 /nixos/lib/test-driver  @tfc
+/nixos/lib/testing      @tfc
 
 # NixOS QEMU virtualisation
 /nixos/modules/virtualisation/qemu-vm.nix                 @raitobezarius
@@ -526,3 +527,6 @@ pkgs/by-name/wa/warp-terminal/  @emilytrau @imadnyc @FlameFlag @johnrtitor
 # Radicle
 /pkgs/build-support/fetchradicle/      @NixOS/radicle
 /pkgs/build-support/fetchradiclepatch/ @NixOS/radicle
+
+# Zellij plugins
+/pkgs/by-name/ze/zellij/plugins/   @PerchunPak
